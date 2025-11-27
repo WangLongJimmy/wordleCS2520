@@ -57,8 +57,8 @@ Wordle/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/WangLongJimmy/wordle-clone.git
-   cd wordle-clone
+   git clone https://github.com/WangLongJimmy/wordleCS2520.git
+   cd wordleCS2520
    ```
 
 2. **Install dependencies**:
