@@ -264,3 +264,8 @@ h1 {
         min-width: 55px;
     }
 }
+
+.tries-counter,
+.tries-counter-bottom {
+    transition: background-color 0.5s, color 0.5s;
+}
