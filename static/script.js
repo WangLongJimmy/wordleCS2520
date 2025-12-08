@@ -232,34 +232,51 @@ class WordleGame {
     }
     
     async newGame() {
-        try {
-            const response = await fetch('/api/new-game', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-            if (response.ok) {
-                this.resetGame();
-                this.showMessage('New game started!', 'info');
-            }
-        } catch (error) {
-            console.error('Error starting new game:', error);
-            this.showMessage('Error starting new game', 'error');
+    try {
+        const response = await fetch('/api/new-game', { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+            this.resetGame();
+            await this.loadGameState();   // <<----- ADD THIS LINE
+            this.showMessage('New game started!', 'info');
         }
+    } catch (error) {
+        console.error('Error starting new game:', error);
+        this.showMessage('Error starting new game', 'error');
     }
+}
+
     
     resetGame() {
-        this.currentRow = 0;
-        this.currentTile = 0;
-        this.gameOver = false;
-        for (let i = 0; i < 6; i++) {
-            for (let j = 0; j < 5; j++) {
-                const tile = document.getElementById(`tile-${i}-${j}`);
-                if (tile) tile.className = 'tile', tile.textContent = '';
+    this.currentRow = 0;
+    this.currentTile = 0;
+    this.gameOver = false;
+
+    for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 5; j++) {
+            const tile = document.getElementById(`tile-${i}-${j}`);
+            if (tile) {
+                tile.className = 'tile';
+                tile.textContent = '';
             }
         }
-        const keys = document.querySelectorAll('.key');
-        keys.forEach(key => key.className = key.textContent === 'ENTER' || key.textContent === 'BACKSPACE' ? 'key wide' : 'key');
-        this.message.textContent = '';
-        this.message.className = 'message';
-        this.updateTriesLeft(this.maxTries);
     }
+
+    const keys = document.querySelectorAll('.key');
+    keys.forEach(key => {
+        key.className = key.textContent === 'ENTER' || key.textContent === 'BACKSPACE'
+            ? 'key wide'
+            : 'key';
+    });
+
+    this.message.textContent = '';
+    this.message.className = 'message';
+    this.updateTriesLeft(this.maxTries);
+}
+
     
     async loadGameState() {
         try {
